@@ -1,0 +1,27 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "f:\\Coding Space\\Java\\jar\\jakarta.servlet.jsp.jstl-2.0.0.jar",
+        "f:\\Coding Space\\Java\\jar\\jakarta.servlet.jsp.jstl-api-2.0.0.jar",
+        "f:\\Coding Space\\Java\\jar\\jaxb-api-2.1.jar",
+        "f:\\Coding Space\\Java\\jar\\sqljdbc42.jar",
+        "f:\\Coding Space\\Java\\jar\\tomcat-servlet-api-10.0.0-M4.jar"
+    ],
+    "sqltools.connections": [
+        {
+            "mssqlOptions": {
+                "appName": "SQLTools",
+                "useUTC": true,
+                "encrypt": true
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 1433,
+            "driver": "MSSQL",
+            "name": "sus_db",
+            "database": "SSU_DB",
+            "username": "sa",
+            "password": "123456"
+        }
+    ]
+}
