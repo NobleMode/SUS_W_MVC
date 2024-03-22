@@ -4,10 +4,6 @@
  */
 package entity;
 
-/**
- *
- * @author Duc Minh
- */
 public class Bill {
     String teacherid, studentid;
     int tutorfee;

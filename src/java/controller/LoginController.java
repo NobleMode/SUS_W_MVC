@@ -16,10 +16,6 @@ import jakarta.servlet.http.HttpSession;
 import model.DAOStudent;
 import model.DAOTeacher;
 
-/**
- *
- * @author Duc Minh
- */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
 

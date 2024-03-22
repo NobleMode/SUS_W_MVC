@@ -35,6 +35,12 @@
                             <a  href="CourseControllerURL?service=listAll" class="btn btn-primary">List all Course</a>
                             <a  href="MajorControllerURL?service=listAll" class="btn btn-primary">List all Major</a>
                         </div>
+
+                        <div> Cart - Bill </div>
+                        <div>
+                            <a  href="CartControllerURL?service=listAll" class="btn btn-primary">List all Cart</a>
+                            <a  href="BillControllerURL?service=listAll" class="btn btn-primary">List all Bill</a>
+                        </div>
                     </div>
                 </div>
             </div>

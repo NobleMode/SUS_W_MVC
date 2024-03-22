@@ -13,10 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
 
-/**
- *
- * @author Duc Minh
- */
 public class DAOBill extends DBConnect{
     public int addBill(Bill s) {
         int n = 0;
