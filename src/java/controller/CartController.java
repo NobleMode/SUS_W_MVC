@@ -4,8 +4,11 @@
  */
 package controller;
 
-import entity.Employee;
-import entity.EmployeeCart;
+import entity.Bill;
+import entity.Student;
+import entity.StudentCart;
+import entity.Teacher;
+import entity.UserLogin;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.Vector;
+import model.DAOBill;
+import model.DAOStudent;
 import model.DAOTeacher;
 
 /**
@@ -37,73 +42,83 @@ public class CartController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        DAOTeacher dao = new DAOTeacher();
+        DAOStudent dao = new DAOStudent();
         String service = request.getParameter("service");
 
         if (service.equals("addtocart")) {
-            String ssn = request.getParameter("ssn");
+            String sid = request.getParameter("sid");
 
-            EmployeeCart empCart = (EmployeeCart) session.getAttribute(ssn);
-            if (empCart == null) {
-                empCart = new EmployeeCart();
-                Vector<Employee> vector = dao.getAll("select * from employee where SSN= '" + ssn + "'");
-                Employee emp = vector.get(0);
-                empCart.setSSN(emp.getSSN());
-                empCart.setFName(emp.getFName());
-                empCart.setLName(emp.getLName());
-                empCart.setSalary(emp.getSalary());
-                empCart.setQuantity(1);
-                session.setAttribute(ssn, empCart);
+            StudentCart stuCart = (StudentCart) session.getAttribute(sid);
+            if (stuCart == null) {
+                stuCart = new StudentCart();
+                Vector<Student> vector = dao.getAll("select * from student where sid= '" + sid + "'");
+                Student stu = vector.get(0);
+                stuCart.setSID(stu.getSID());
+                stuCart.setFname(stu.getFname());
+                stuCart.setLname(stu.getLname());
+                stuCart.setFee(stu.getFee());
+                stuCart.setHourPerDay(1);
+                session.setAttribute(sid, stuCart);
             } else {
-                empCart.setQuantity(empCart.getQuantity() + 1);
-                session.setAttribute(ssn, empCart);
+                stuCart.setHourPerDay(stuCart.getHourPerDay() + 1);
+                session.setAttribute(sid, stuCart);
             }
-            response.sendRedirect("EmployeeController");
+            response.sendRedirect("StudentControllerURL");
 
-        }else if (service.equals("updateCart")){
-            String ssn = request.getParameter("ssn");
-            String amountS = request.getParameter("amount");
-            int amount = Integer.parseInt(amountS);
+        } else if (service.equals("update")) {
+            Enumeration<String> allNames = session.getAttributeNames();
 
-            EmployeeCart empCart = (EmployeeCart) session.getAttribute(ssn);
-            if (empCart == null) {
-                empCart = new EmployeeCart();
-                Vector<Employee> vector = dao.getAll("select * from employee where SSN= '" + ssn + "'");
-                Employee emp = vector.get(0);
-                empCart.setSSN(emp.getSSN());
-                empCart.setFName(emp.getFName());
-                empCart.setLName(emp.getLName());
-                empCart.setSalary(emp.getSalary());
-                empCart.setQuantity(amount);
-                session.setAttribute(ssn, empCart);
-            } else {
-                empCart.setQuantity(empCart.getQuantity() + 1);
-                session.setAttribute(ssn, empCart);
+            while (allNames.hasMoreElements()) {
+                String key = allNames.nextElement();
+                if (!key.equals("UserLogin")) {
+                    StudentCart stuCart = (StudentCart) session.getAttribute(key);
+                    int hourPerDay = Integer.parseInt(request.getParameter(key + "hourperday"));
+                    if (hourPerDay > 0) {
+                        stuCart.setHourPerDay(hourPerDay);
+                    } else if (hourPerDay == 0) {
+                        session.removeAttribute(key);
+                    }
+                    session.setAttribute(key, stuCart);
+                }
             }
-            response.sendRedirect("EmployeeController");
-
-
+            response.sendRedirect("CartController?service=showcart");
         } else if (service.equals("showcart")) {
             RequestDispatcher dis = request.getRequestDispatcher("jsp/ShowCart.jsp");
             dis.forward(request, response);
         } else if (service.equals("remove")) {
-            String key = request.getParameter("ssn");
-            EmployeeCart empCart = (EmployeeCart) session.getAttribute(key);
-            empCart.setQuantity(empCart.getQuantity() - 1);
-
-            if (empCart.getQuantity() == 0) {
-                session.removeAttribute(key);
-                response.sendRedirect("CartController?service=showcart");
-            } else {
-                session.setAttribute(key, empCart);
-                response.sendRedirect("CartController?service=showcart");
-            }
+            String key = request.getParameter("sid");
+            session.removeAttribute(key);
+            response.sendRedirect("CartController?service=showcart");
         } else if (service.equals("removeall")) {
             Enumeration em = session.getAttributeNames();
             while (em.hasMoreElements()) {
                 String key = em.nextElement().toString();
                 if (!key.equals("UserLogin")) {
                     session.removeAttribute(key);
+                }
+            }
+            response.sendRedirect("CartController?service=showcart");
+        } else if (service.equals("checkout")) {
+            DAOBill daoBill = new DAOBill();
+            DAOTeacher daoTeacher = new DAOTeacher();
+            UserLogin user = (UserLogin) session.getAttribute("UserLogin");
+            String gmail = user.getUserName();
+            
+            Vector<Teacher> teacher = daoTeacher.getAll("select * from Teacher where email = '"+gmail+"'");
+            
+            Enumeration<String> allNames = session.getAttributeNames();
+            while (allNames.hasMoreElements()) {
+                String key = allNames.nextElement();
+                if (!key.equals("UserLogin")) {
+                    StudentCart stuCart = (StudentCart) session.getAttribute(key);
+                    Vector<Bill> billVec = daoBill.getAll("select * from bill where teacherid = '" + teacher.get(0).getTID() + "' AND studentid = '" + stuCart.getSID()+ "'");
+                    if (!billVec.isEmpty()) {
+                        Bill bill = new Bill(teacher.get(0).getTID(), stuCart.getSID(), stuCart.getFee());
+                        daoBill.updateBill(bill);
+                    } else {
+                        Bill bill = new Bill(teacher.get(0).getTID(), stuCart.getSID(), stuCart.getFee());
+                        daoBill.addBill(bill);
+                    }
                 }
             }
             response.sendRedirect("CartController?service=showcart");

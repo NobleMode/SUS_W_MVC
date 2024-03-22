@@ -1,14 +1,15 @@
 package entity;
 
 public class Student {
-    private String SID ,fname, lname, major, dob, address, email, password;
+
+    private String SID, fname, lname, major, dob, address, email, password;
     private boolean gender;
     private int phone, fee;
 
     public Student() {
     }
 
-    public Student(String SID, String fname, String lname, boolean gender, String dob, String major, String address, int phone,  String email, String password, int fee) {
+    public Student(String SID, String fname, String lname, boolean gender, String dob, String major, String address, int phone, String email, String password, int fee) {
         this.SID = SID;
         this.fname = fname;
         this.lname = lname;
@@ -112,18 +113,18 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "SID='" + SID + '\'' +
-                ", fname='" + fname + '\'' +
-                ", lname='" + lname + '\'' +
-                ", major='" + major + '\'' +
-                ", dob='" + dob + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", gender=" + gender +
-                ", phone=" + phone +
-                ", fee=" + fee +
-                '}';
+        return "Student{"
+                + "SID='" + SID + '\''
+                + ", fname='" + fname + '\''
+                + ", lname='" + lname + '\''
+                + ", major='" + major + '\''
+                + ", dob='" + dob + '\''
+                + ", address='" + address + '\''
+                + ", email='" + email + '\''
+                + ", password='" + password + '\''
+                + ", gender=" + gender
+                + ", phone=" + phone
+                + ", fee=" + fee
+                + '}';
     }
 }

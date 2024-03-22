@@ -1,5 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="entity.Course,java.util.Vector"%>
+<%@ page import="entity.Major,java.util.Vector"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,41 +12,41 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="title"> SSU University - Course Page </div>
+    <div class="title"> SSU University - Major Page </div>
 
     <div class="body">
 
         <jsp:include page="Menu.jsp" />
 
-        <p><a href="CourseControllerURL?service=listAll">Show All Course</a></p>
+        <p><a href="MajorControllerURL?service=listAll">Show All Major</a></p>
         <table class="table table-striped">
             <tr class="active">
-                <th>Course ID</th>
+                <th>Major ID</th>
+                <th>Teacher ID</th>
                 <th>Name</th>
-                <th>Major</th>
+                <th>Desc</th>
                 <c:if test="${sessionScope.UserLogin.isIsAdmin()}">
                     <th>Update</th>
                     <th>Delete</th>
-                    <th>Cart</th>
                 </c:if>
             </tr>
             <% 
-            Vector<Course> vector = (Vector<Course>)request.getAttribute("data");
-            for (Course temp : vector) {
+            Vector<Major> vector = (Vector<Major>)request.getAttribute("data");
+            for (Major temp : vector) {
              %>
             <tr>
-                <td><%= temp.getCID() %></td>
+                <td><%= temp.getMID() %></td>
+                <td><%= temp.getTeacherID() %></td>
                 <td><%= temp.getName() %></td>
-                <td><%= temp.getMajor() %></td>
+                <td><%= temp.getDescription() %></td>
                 <c:if test="${sessionScope.UserLogin.isIsAdmin()}">
-                    <td class="table-success"><a href="CourseControllerURL?service=update&ssn=<%= temp.getCID() %>">update</a></td>
-                    <td class="table-danger"><a href="CourseControllerURL?service=delete&ssn=<%= temp.getCID() %>">delete</a></td>
-                    <td class="table-info"><a href="CartController?service=addtocart&ssn=<%= temp.getCID() %>">add</a></td>
+                    <td class="table-success"><a href="MajorControllerURL?service=update&ssn=<%= temp.getMID() %>">update</a></td>
+                    <td class="table-danger"><a href="MajorControllerURL?service=delete&ssn=<%= temp.getMID() %>">delete</a></td>
                 </c:if>
             </tr>
             <% } %>
         </table>
-        <form action="CourseControllerURL?service=listAll" method="post">
+        <form action="MajorControllerURL?service=listAll" method="post">
             <table>
                 <tr>
                     <td>SEARCH NAME: </td>

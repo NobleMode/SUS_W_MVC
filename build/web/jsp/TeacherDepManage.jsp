@@ -30,7 +30,6 @@
                 <c:if test="${sessionScope.UserLogin.isIsAdmin()}">
                     <th>Update</th>
                     <th>Delete</th>
-                    <th>Cart</th>
                 </c:if>
             </tr>
             <% 
@@ -47,7 +46,6 @@
                 <c:if test="${sessionScope.UserLogin.isIsAdmin()}">
                     <td class="table-success"><a href="TeacherDepControllerURL?service=update&ssn=<%= temp.getTeacherID() %>">update</a></td>
                     <td class="table-danger"><a href="TeacherDepControllerURL?service=delete&ssn=<%= temp.getTeacherID() %>">delete</a></td>
-                    <td class="table-info"><a href="CartController?service=addtocart&ssn=<%= temp.getTeacherID() %>">add</a></td>
                 </c:if>
             </tr>
             <% } %>

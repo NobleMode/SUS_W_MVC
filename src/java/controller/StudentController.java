@@ -1,8 +1,7 @@
 /*
 * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
-*/
-
+ */
 package controller;
 
 import entity.Student;
@@ -23,24 +22,25 @@ import model.DAOStudent;
  *
  * @author admin
  */
-@WebServlet(name="StudentController", urlPatterns={"/StudentControllerURL"})
+@WebServlet(name = "StudentController", urlPatterns = {"/StudentControllerURL"})
 public class StudentController extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
+            throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
         DAOStudent dao = new DAOStudent();
-        
+
         HttpSession session = request.getSession(true);
-        
+
         String service = request.getParameter("service");
         if (service == null) {
             service = "listAll";
@@ -60,8 +60,7 @@ public class StudentController extends HttpServlet {
 
             RequestDispatcher dis = request.getRequestDispatcher("jsp/StudentManage.jsp");
             dis.forward(request, response);
-        } 
-        else if (service.equals("update")) {
+        } else if (service.equals("update")) {
             String submit = request.getParameter("submit");
             if (submit == null) {
                 String SID = request.getParameter("ssn");
@@ -69,8 +68,7 @@ public class StudentController extends HttpServlet {
                 request.setAttribute("data", vector);
                 RequestDispatcher dis = request.getRequestDispatcher("jsp/UpdateStudent.jsp");
                 dis.forward(request, response);
-            } 
-            else {
+            } else {
                 String sid = request.getParameter("SID");
                 String fname = request.getParameter("FName");
                 String lname = request.getParameter("LName");
@@ -84,20 +82,17 @@ public class StudentController extends HttpServlet {
                 int fee = Integer.parseInt(request.getParameter("Fee"));
                 Student s = new Student(sid, fname, lname, gender, dob, major, address, phone, email, password, fee);
 
-                dao.updateStudent(s); 
-                    response.sendRedirect("StudentControllerURL?service=listAll");
-                
-                
+                dao.updateStudent(s);
+                response.sendRedirect("StudentControllerURL?service=listAll");
+
             }
-        } 
-        else if (service.equals("insert")) {
+        } else if (service.equals("insert")) {
             request.getRequestDispatcher("jsp/InsertStudent.jsp").forward(request, response);
-        } 
-        else if (service.equals("delete")) {
+        } else if (service.equals("delete")) {
             dao.removeStudent(request.getParameter("ssn"));
             response.sendRedirect("StudentControllerURL?service=listAll");
         }
-        
+
         // try (PrintWriter out = response.getWriter()) {
         //     /* TODO output your page here. You may use following sample code. */
         //     out.println("<!DOCTYPE html>");
@@ -110,11 +105,12 @@ public class StudentController extends HttpServlet {
         //     out.println("</body>");
         //     out.println("</html>");
         // }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -122,12 +118,13 @@ public class StudentController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -135,12 +132,13 @@ public class StudentController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
